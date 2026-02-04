@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sneha Portfolio</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    color:white;
+    overflow:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(-45deg,#0f172a,#1e293b,#312e81,#0ea5e9);
+    background-size:400% 400%;
+    animation:bgAnim 12s ease infinite;
+    z-index:-2;
+}
+
+@keyframes bgAnim{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.page, .hero{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding:40px;
+    box-sizing:border-box;
+}
+
+.active{
+    display:flex;
+}
+
+.card{
+    background:rgba(255,255,255,0.08);
+    padding:25px;
+    border-radius:18px;
+    backdrop-filter:blur(10px);
+    max-width:900px;
+    width:100%;
+    overflow-y:auto;
+    max-height:80vh;
+}
+
+.hero h1{
+    font-size:55px;
+    background:linear-gradient(90deg,#38bdf8,#818cf8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.menu-icon{
+    position:fixed;
+    top:20px;
+    left:20px;
+    font-size:30px;
+    cursor:pointer;
+    z-index:1002;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:260px;
+    height:100%;
+    background:#020617;
+    transform:translateX(-100%);
+    transition:0.4s;
+    z-index:1001;
+    padding-top:60px;
+}
+
+.sidebar.open{
+    transform:translateX(0);
+}
+
+.sidebar a{
+    display:block;
+    padding:20px 30px;
+    color:white;
+    text-decoration:none;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    z-index:1000;
+}
+
+.overlay.show{
+    display:block;
+}
+
+.skill-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:10px;
+}
+
+.skill-tags span{
+    background:rgba(255,255,255,0.12);
+    padding:8px 16px;
+    border-radius:25px;
+}
+
+.project-list button{
+    display:block;
+    width:100%;
+    margin:12px 0;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    cursor:pointer;
+    background:#38bdf8;
+    text-align:left;
+}
+
+.back-btn{
+    cursor:pointer;
+    font-size:22px;
+    margin-bottom:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="menu-icon" onclick="openMenu()">☰</div>
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<div class="sidebar" id="sidebar">
+<a onclick="showPage('home')">Home</a>
+<a onclick="showPage('about')">About</a>
+<a onclick="showPage('skills')">Skills</a>
+<a onclick="showPage('projects')">Projects</a>
+<a onclick="showPage('internship')">Internships</a>
+<a onclick="showPage('contact')">Contact</a>
+</div>
+
+<div id="home" class="hero active">
+<h1>Hi, This is Sneha</h1>
+<p>Here is to know more about me</p>
+</div>
+
+<div id="about" class="page">
+<h2>About Me</h2>
+<div class="card">
+<p>Hey there! This is Sneha, a passionate final year Electronics and Communication Engineering student at Sri Venkateswara College of Engineering.</p>
+<p>I have strong interest in Embedded Systems, IoT and Medical Electronics and enjoy designing real world hardware and software integrated solutions.</p>
+<p>I am actively seeking opportunities in the Embedded Systems domain to apply my technical knowledge and gain industrial experience.</p>
+</div>
+</div>
+
+<div id="skills" class="page">
+<h2>Skills</h2>
+<div class="card">
+<h3>Programming Languages</h3>
+<div class="skill-tags">
+<span>Java</span>
+<span>C++</span>
+<span>Embedded C</span>
+</div>
+
+<h3>Microcontrollers</h3>
+<div class="skill-tags">
+<span>STM32</span>
+<span>ESP32</span>
+<span>Raspberry Pi</span>
+<span>8051</span>
+</div>
+
+<h3>Protocols & Interfaces</h3>
+<div class="skill-tags">
+<span>UART</span>
+<span>SPI</span>
+<span>I2C</span>
+<span>CAN</span>
+</div>
+</div>
+</div>
+
+<div id="projects" class="page">
+<h2>Projects</h2>
+
+<!-- Project List View -->
+<div id="projectList" class="card">
+<div class="project-list">
+<button onclick="openProject('p1')">IoT Based Public Distribution System (Capstone Project)</button>
+<button onclick="openProject('p2')">AC Line Monitoring System of Automobile System (R&D Funded Project)</button>
+<button onclick="openProject('p3')">GSM Based Fire Detection and Alert System</button>
+<button onclick="openProject('p4')">Intruder Detection System Using Image Comparison</button>
+</div>
+</div>
+
+<!-- Project Detail View -->
+<div id="projectDetail" class="card" style="display:none">
+<div class="back-btn" onclick="closeProject()">⬅ Back</div>
+<div id="projectContent"></div>
+</div>
+
+</div>
+
+<div id="internship" class="page">
+<h2>Internships</h2>
+<div class="card">
+
+<h3>Salcomp Manufacturing Private Limited</h3>
+<p><b>Role:</b> Product Testing Intern</p>
+<p>Gained hands on industrial exposure to charger manufacturing and testing processes. Conducted Automated Test Equipment testing, charger drop test, voltage testing and wire bending durability testing ensuring product quality compliance.</p>
+
+<hr>
+
+<h3>Skillcraft Technology</h3>
+<p><b>Role:</b> Cybersecurity Intern</p>
+<p>Gained foundational exposure to cybersecurity concepts including network security. Implemented Caesar Cipher encryption, developed password strength analyzer and performed image encryption using pixel manipulation techniques.</p>
+
+</div>
+</div>
+
+<div id="contact" class="page">
+<h2>Contact</h2>
+<div class="card">
+<p>Email: snehaalagappan2003@gmail.com</p>
+<p>Phone: 9790595932</p>
+<p>LinkedIn: linkedin.com/in/sneha-a</p>
+</div>
+</div>
+
+<script>
+
+function openMenu(){
+    document.getElementById("sidebar").classList.add("open");
+    document.getElementById("overlay").classList.add("show");
+}
+
+function closeMenu(){
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("overlay").classList.remove("show");
+}
+
+function showPage(pageId){
+    document.querySelectorAll('.page, .hero').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    closeMenu();
+    closeProject();
+}
+
+function openProject(project){
+
+const data = {
+
+p1:`<h3>IoT Based Public Distribution System (Capstone Project)</h3>
+<p>Developed an automated ration distribution system replacing manual verification using RFID authentication. The system enables real time monitoring of stock availability and transaction tracking through IoT dashboard improving transparency and efficiency.</p>
+<p><b>Tech Stack:</b> Arduino, ESP32, RFID</p>`,
+
+p2:`<h3>AC Line Monitoring System of Automobile System (R&D Funded Project)</h3>
+<p>Designed system to detect unnecessary AC usage in vehicles during idle conditions by analysing electrical signals from wiper motor integrated with GPS tracking. SMS alerts notify vehicle owners reducing fuel wastage.</p>
+<p><b>Tech Stack:</b> Arduino, ESP32, GSM Module, Voltage Monitoring</p>`,
+
+p3:`<h3>GSM Based Fire Detection and Alert System</h3>
+<p>Implemented industrial fire monitoring system using flame sensors that triggers emergency SMS alerts to responders enabling quick action and improved safety.</p>
+<p><b>Tech Stack:</b> Arduino, GSM Module, Flame Sensors</p>`,
+
+p4:`<h3>Intruder Detection System Using Image Comparison</h3>
+<p>Developed Python based surveillance system comparing captured images with stored dataset to identify unauthorized access and generate real time alerts.</p>
+<p><b>Tech Stack:</b> Python, Image Processing, Dataset Matching</p>`
+
+}
+
+    document.getElementById("projectContent").innerHTML = data[project];
+    document.getElementById("projectList").style.display = "none";
+    document.getElementById("projectDetail").style.display = "block";
+}
+
+function closeProject(){
+    document.getElementById("projectList").style.display = "block";
+    document.getElementById("projectDetail").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
